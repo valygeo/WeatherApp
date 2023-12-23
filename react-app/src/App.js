@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import hotBg from "./assets/hot.jpg";
 import { Description } from "./Components/Description";
-import { getFormattedWeatherData } from "./weatherService"; // Assuming you have a function for getting weather data
+import { getFormattedWeatherData } from "./weatherService";
 import "./App.css";
-//dd
+
 function App() {
   const [units, setUnits] = useState("metric");
   const [weather, setWeather] = useState(null);
@@ -41,22 +41,22 @@ function App() {
 
   useEffect(() => {
     if (city.trim() === "") {
-      // If no city is provided, get current location weather
       fetchCurrentLocationWeather();
     } else {
-      // Fetch weather data for the entered city
       fetchData(city);
     }
   }, [city, units]);
 
   const handleSearch = () => {
-    // Trigger fetching weather data for the entered city
     if (city.trim() !== "") {
       fetchData(city);
     } else {
-      // If no city is provided, get current location weather
       fetchCurrentLocationWeather();
     }
+  };
+
+  const toggleUnits = () => {
+    setUnits((prevUnits) => (prevUnits === "metric" ? "imperial" : "metric"));
   };
 
   return (
@@ -69,8 +69,7 @@ function App() {
               name="city"
               placeholder="Enter city..."
               value={city}
-              onChange={(e) => setCity(e.target.value)}
-            ></input>
+              onChange={(e) => setCity(e.target.value)}></input>
             <button onClick={handleSearch}>Search</button>
           </div>
           {!loading && weather && weather.name ? (
@@ -81,7 +80,10 @@ function App() {
                 <h3>{weather.description}</h3>
               </div>
               <div className="temperature">
-                <h1>{`${weather.temp.toFixed()}`}&deg;C</h1>
+                <h1>
+                  {`${weather.temp.toFixed()}`}&deg;
+                  {units === "metric" ? "C" : "F"}
+                </h1>
               </div>
             </div>
           ) : null}
